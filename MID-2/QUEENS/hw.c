@@ -1,13 +1,21 @@
 #include<stdio.h>
 #include<stdlib.h>
 
+// Structure to store the successful games' queens' position
 typedef struct GAME{
 	int BOARD[8][8];	
 }GAME;
 
+// Record the influence
 int BOARD[8][8] = {0};
+
+// Record the score
 int SCORE[8][8];
+
+// Record the real time queens' position
 int REAL[8][8];
+
+// A list to retrieve successful games
 GAME** game_index;
 int game_counter = 0;
 
@@ -69,7 +77,7 @@ void find_queens (int row, int col, int remain)
 				find_queens (i, col+1, remain-1);
 			}
 	}
-	// revert the influence
+	// Revert the influence
 	influence (row, col, -1);
 }
 
@@ -77,9 +85,11 @@ int main()
 {
 	int max , sum;
 	int queries;
+
+	// Have a index to retrieve qualified games easily
 	game_index = malloc (92*sizeof(GAME*));
 	
-	// Process the recursive part
+	// Generate the game list by recursive method
 	for (int i = 0; i< 8; i++){
 		if (BOARD[i][0] == 0)
 			find_queens (i, 0, 8-1);
@@ -94,9 +104,10 @@ int main()
 			for (int col = 0; col < 8; col++)
 				scanf("%d",&SCORE[row][col]);
 
-		// Compute the max sum one by one
+		// Compute the max sum game by game
 		for (int j = 0; j < 92; j++){
 			sum = 0;
+			// Traverse the matrix and compute the product
 			for (int rows = 0; rows < 8; rows++)
 				for (int cols = 0; cols < 8; cols++)
 					if (game_index[j] -> BOARD[rows][cols] == 1)
