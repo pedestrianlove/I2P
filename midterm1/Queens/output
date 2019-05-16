@@ -1,0 +1,2 @@
+gcc hw.c -o hw && ./hw < sampleIn
+0
