@@ -1,2 +1,2 @@
 build:
-	gcc hw.c -o hw && ./hw < sampleIn
+	gcc -g hw.c -o hw && ./hw < sampleIn
