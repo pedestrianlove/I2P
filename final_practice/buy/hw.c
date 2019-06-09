@@ -103,7 +103,7 @@ int Analyze_list (int first_day_quota) // FIXME Logic error
 			min_sum += LIST[i]->PRICE[0];
 		}
 		if (counter >= first_day_quota)
-			return  
+			return // FIXME 
 	}
 
 
