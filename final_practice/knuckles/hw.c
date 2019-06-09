@@ -4,7 +4,7 @@
 int* COUNT;
 char* CHAR;
 
-int knuckles ()
+int knuckles () // FIXME UNKNOWN ISSUE
 {
 	int inputs;
 	scanf("%d", &inputs);
