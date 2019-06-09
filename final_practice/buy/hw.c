@@ -35,7 +35,6 @@ int main()
 
 	int sum = Analyze_list ();
 	printf("%d\n", sum);
-
 	Delete_list ();
 	return 0;
 }
@@ -87,8 +86,6 @@ int Analyze_list (int first_day_quota) // FIXME Logic error
 
 
 	qsort (LIST, LIST_LENGTH, sizeof(item*), cmp_all);	
-
-
 	int counter = 0;
 	for (int i = 0; i < LIST_LENGTH; i++) {
 		if (LIST[i] -> MIN_DAY == 0) {
@@ -98,22 +95,28 @@ int Analyze_list (int first_day_quota) // FIXME Logic error
 		}
 	}
 
-	while (counter < first_day_quota) {
-		int i = 0;
-		if (LIST[i] -> STATE == NOT_MINE) {
-			
+	qsort (LIST, LIST_LENGTH, sizeof(item*), cmp_day1);
+	for (int i = 0; i < LIST_LENGTH; i++) {
+		if (LIST[i]->STATE == NOT_MINE ) {
+			counter++;
+			LIST[i] -> STATE = MINE;
+			min_sum += LIST[i]->PRICE[0];
 		}
-
-		i++;
+		if (counter >= first_day_quota)
+			return  
 	}
 
 
 	qsort (LIST, LIST_LENGTH, sizeof(item*), cmp_day2);
-
-
-	for (int i = 0; i < LIST_LENGTH; i++)
-		if (LIST[i]->STATE == NOT_MINE )
+	while (counter < LIST_LENGTH) {
+		int i = 0;
+		if (LIST[i]->STATE == NOT_MINE) {
+			counter++;
+			LIST[i] -> STATE = MINE;
 			min_sum += LIST[i] ->PRICE[1];	
+		}
+		i++;
+	}
 	
 
 	return min_sum;
