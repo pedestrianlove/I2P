@@ -6,7 +6,9 @@
 
 typedef struct item {
 	int PRICE[2];
+
 	int STATE;
+	int MIN_DAY;
 }item;
 
 // global
@@ -17,6 +19,7 @@ int LIST_LENGTH;
 item* init_item ();
 int cmp_day1 (const void*, const void*);
 int cmp_day2 (const void*, const void*);
+int cmp_all (const void*, const void*);
 
 // interface
 void Init_list ();
@@ -54,6 +57,7 @@ item* init_item ()
 	new -> PRICE[0] = 0;
 	new -> PRICE[1] = 0;
 	new -> STATE = NOT_MINE;
+	new -> MIN_DAY = 3;
 
 	return new;
 }
@@ -73,17 +77,34 @@ void Input_list ()
 }
 
 
-int Analyze_list (int first_day_quota) // FIXME
+int Analyze_list (int first_day_quota) // FIXME Logic error
 {
 	int min_sum = 0;
+	
+	
+	for (int i = 0; i < LIST_LENGTH; i++)
+		LIST[i]->MIN_DAY = (LIST[i]->PRICE[0] <= LIST[i]->PRICE[1])? 0 : 1;
 
 
-	qsort (LIST, LIST_LENGTH, sizeof(item*), cmp_day1);	
+	qsort (LIST, LIST_LENGTH, sizeof(item*), cmp_all);	
 
 
-	for (int i = 0; i < first_day_quota; i++) {
-		min_sum += LIST[i] -> PRICE[0];
-		LIST[i] -> STATE = MINE;
+	int counter = 0;
+	for (int i = 0; i < LIST_LENGTH; i++) {
+		if (LIST[i] -> MIN_DAY == 0) {
+			counter++;
+			LIST[i] -> STATE = MINE;
+			min_sum += LIST[i]->PRICE[0];
+		}
+	}
+
+	while (counter < first_day_quota) {
+		int i = 0;
+		if (LIST[i] -> STATE == NOT_MINE) {
+			
+		}
+
+		i++;
 	}
 
 
@@ -111,6 +132,14 @@ int cmp_day2 (const void * a, const void * b)
 
 	return va->PRICE[1] - vb->PRICE[1];
 }
+int cmp_all (const void * a, const void * b)
+{
+	const item * va = (const item *) a;
+	const item * vb = (const item *) b;
+
+	return va->PRICE[va->MIN_DAY] - vb->PRICE[va->MIN_DAY];
+}
+
 
 
 void Delete_list ()
