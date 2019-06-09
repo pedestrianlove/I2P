@@ -31,12 +31,16 @@ long long Compute (long long);
 
 int main()
 {
+	int counter = 0;
 	int queries;
+	scanf("%d", &queries);
 	long long number;
 	for (int i = 0; i< queries; i++) {
 		scanf("%lld", &number);
 		printf("%lld\n", Compute(number));
+		counter ++;
 	}
+	printf("This loop has been running for %d times\n", counter);
 
 
 	return 0;
@@ -87,7 +91,7 @@ long long getPx (long long number)
 			base = matrix_multiplication (base, tmp);
 			number --;
 		}
-
+		
 		if (check_entry_overflow (base))
 			matrix_quotient (base);
 	}	
