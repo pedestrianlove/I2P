@@ -41,13 +41,13 @@ void erase2(Node** head, char* dst)
 	}
 }
 
-void reverse(Node** head, int start, int dst) // FIXME
+void reverse(Node** head, int start, int dst)
 {
 	if (start > dst)
 		reverse (Node** head, dst, start);
 
-	Node* Start = jump_node (head, start);
-	Node* Dst = jump_node (head, dst);
+	Node* Start = jump_node (head, start - 1);
+	Node* Dst = jump_node (head, dst - 1);
 	
 
 	
