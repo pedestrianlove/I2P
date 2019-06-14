@@ -4,8 +4,9 @@
 // object and methods
 typedef struct man {
 	int HP;
-	int POS;
-	int LIFE;
+	int POS;     // use the index of the track as POS
+	int RELIFE;
+	int BIKE_HP;
 }man;
 man* INIT_man (int k)
 {
@@ -13,84 +14,90 @@ man* INIT_man (int k)
 
 	new -> HP = k;
 	new -> POS = 0;
-	new -> LIFE = 0;
+	new -> RELIFE = 0;
 
 	return new;
 }
 
+typedef struct road {
+	int* STATIONS_LOC;
+	int STATIONS_NUM;
+}road;
+
+/*------------------------------------------------------------------*/
+
 
 // global
 man* RACER;
-int BIKE_HP;
-int* TRACK;
-int TRACK_LEN;
-int POS_index;
+road* TRACK;
+
 
 // internal
 void ready_racer (int);
 void ready_track (int);
+void wear_the_bike (int);
 void change_bike ();
+
 
 // Interface
 void Ready ();
 int Go ();
 
+
+/*------------------------------------------------------------------*/
+
 int main ()
 {
 	Ready ();
-	int tmp;
 	if (Go ())
 		printf("%d\n", RACER -> LIFE);
 	else
 		printf("The Legend Falls.\n");	
 }
 
+/*-------------------------------------------------------------------*/
 void Ready ()
 {
-	int stations, bike_dur;
-	scanf("%d%d", &stations, &bike_dur);
-	ready_racer (bike_dur);
+	int stations, bike_hp;
+	scanf("%d%d", &stations, &bike_hp);
+	ready_racer (bike_hp);
 	ready_track (stations);
 }
-void ready_racer (int k)
+void ready_racer (int bike_hp)
 {
-	RACER = INIT_man (k);
-	BIKE_HP = k;
+	RACER = INIT_man (bike_hp);
+	RACER -> BIKE_HP = bike_hp;
 }
 void ready_track (int stations)
 {
-	TRACK = malloc (sizeof(int) * stations);
-	for (int i = 0; i < stations; i++)
-		scanf("%d", &TRACK[i]);
-	TRACK_LEN = stations;
-	POS_index = 0;
+	TRACK = malloc (sizeof(road));
+
+	TRACK -> STATIONS_NUM = stations + 1;
+	TRACK -> STATIONS_LOC[0] = 0;
+	for (int i = 1; i < stations + 1; i++)
+		scanf("%d", &TRACK->STATIONS_LOC[i]);
 }
 
 
-int Go ()
+int Go () // indexing using the number of stations
 {
-	int changed_flag = 0;
-	while (POS_index < TRACK_LEN && RACER -> HP > 0) {
-		if (TRACK[POS_index] - RACER->POS >= 0) {
-			changed_flag = 0;
-			RACER -> HP -= TRACK[POS_index] - RACER->POS;
-			RACER -> POS = TRACK[POS_index++];
-			
-		}
-		else {
-			if (changed_flag == 0) change_bike ();
-			else
-				return 0;
-			changed_flag ++;
-		}
+	wear_the_bike (TRACK -> STATIONS_LOC[RACER->POS+1]  -  TRACK -> STATIONS_LOC[RACER->POS]);
+
+	if (RACER -> HP < 0) {
+		if (RACER)
 	}
-	return 1;
-		
+
+
+	
+	wear_the_bike (TRACK -> STATIONS_LOC[RATER->POS]  -  TRACK -> STATIONS_LOC[RACER->POS+1]);
+	return 0;
+}
+void wear_the_bike (int distance)
+{
+	RACER -> HP -= distance;
 }
 void change_bike ()
 {
-	if (RACER -> POS == TRACK[POS_index]) {
-		RACER -> HP = BIKE_HP;
-	}
-	RACER -> LIFE ++;
+	RACER -> HP = RACER -> BIKE_HP;
+	RACER -> RELIFE ++;
 }
