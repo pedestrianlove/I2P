@@ -1,3 +1,8 @@
+/*
+ * If we use the recursive implementation in this HW, the last test data will get TLE
+ * while the While-loop implementation works fine, passing with 28 ms
+ */
+
 #include<stdio.h>
 #include<stdlib.h>
 
@@ -44,15 +49,20 @@ void Ready ();
 int Go ();
 
 
+// misc
+void FREE ();
 /*------------------------------------------------------------------*/
 
 int main ()
 {
 	Ready ();
 	if (Go ())
-		printf("%d\n", RACER -> LIFE);
+		printf("%d\n", RACER -> RELIFE);
 	else
 		printf("The Legend Falls.\n");	
+
+
+	FREE ();
 }
 
 /*-------------------------------------------------------------------*/
@@ -73,6 +83,7 @@ void ready_track (int stations)
 	TRACK = malloc (sizeof(road));
 
 	TRACK -> STATIONS_NUM = stations + 1;
+	TRACK -> STATIONS_LOC = malloc (sizeof(int) * (stations + 1));
 	TRACK -> STATIONS_LOC[0] = 0;
 	for (int i = 1; i < stations + 1; i++)
 		scanf("%d", &TRACK->STATIONS_LOC[i]);
@@ -81,16 +92,47 @@ void ready_track (int stations)
 
 int Go () // indexing using the number of stations
 {
+// While-loop implementation
+	while (RACER->POS != TRACK->STATIONS_NUM) {
+		if (TRACK -> STATIONS_LOC[RACER->POS+1]  -  TRACK -> STATIONS_LOC[RACER->POS]  <=  RACER -> HP) {
+			wear_the_bike (TRACK -> STATIONS_LOC[RACER->POS+1]  -  TRACK -> STATIONS_LOC[RACER->POS]);
+			RACER -> POS ++;
+		}
+		else {
+			change_bike ();
+			if (TRACK -> STATIONS_LOC[RACER->POS+1]  -  TRACK -> STATIONS_LOC[RACER->POS]  <=  RACER -> HP) {
+				wear_the_bike (TRACK -> STATIONS_LOC[RACER->POS+1]  -  TRACK -> STATIONS_LOC[RACER->POS]);
+				RACER -> POS ++;
+			}
+			else
+				return 0;
+		}
+	}
+	return 1;	
+// Recursive implementation
+/*
+	printf("The racer is now at station NO.%d, HP=%d\n", RACER -> POS, RACER -> HP);
 	wear_the_bike (TRACK -> STATIONS_LOC[RACER->POS+1]  -  TRACK -> STATIONS_LOC[RACER->POS]);
+	if (RACER -> HP >= 0) {
+		RACER -> POS ++;
+		if (RACER -> POS  ==  TRACK -> STATIONS_NUM) 
+			return 1;
 
-	if (RACER -> HP < 0) {
-		if (RACER)
+		if (Go ())
+			return 1;
+		else {
+			printf("The racer failed at station NO.%d, HP=%d\n", RACER -> POS, RACER -> HP);
+			change_bike ();
+			if (Go ())
+				return 1;
+		}
+		RACER -> POS --;
+
 	}
 
-
-	
-	wear_the_bike (TRACK -> STATIONS_LOC[RATER->POS]  -  TRACK -> STATIONS_LOC[RACER->POS+1]);
+	wear_the_bike (TRACK -> STATIONS_LOC[RACER->POS]  -  TRACK -> STATIONS_LOC[RACER->POS+1]);
 	return 0;
+*/
 }
 void wear_the_bike (int distance)
 {
@@ -100,4 +142,12 @@ void change_bike ()
 {
 	RACER -> HP = RACER -> BIKE_HP;
 	RACER -> RELIFE ++;
+}
+
+
+void FREE ()
+{
+	free (RACER);
+	free (TRACK -> STATIONS_LOC);
+	free (TRACK);
 }
