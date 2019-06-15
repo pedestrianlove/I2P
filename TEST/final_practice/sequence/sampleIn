@@ -1,0 +1,11 @@
+2
+9
+insert 3 6
+insert 1 1
+show
+erase 2
+show
+move 5
+show
+erase 3
+show

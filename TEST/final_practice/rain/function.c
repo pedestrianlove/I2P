@@ -63,13 +63,11 @@ void reverse(Node** head, int start, int dst)
 	Node* ptr = Start -> next;
 	Node* to_connect = Dst;
 	
-	while (1) {
+	while (ptr -> next != Dst) {
 		tmp = ptr;
 		ptr = ptr -> next;
 		tmp -> next = to_connect;
 		to_connect = tmp;
-		if (ptr -> next == Dst)
-			break;
 	}
 	
 	Start -> next = ptr;
