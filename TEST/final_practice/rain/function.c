@@ -1,6 +1,11 @@
 #include<stdio.h>
 #include<stdlib.h>
 #include<string.h>
+typedef struct _NODE
+{
+	char color[10];
+	struct _NODE *next;
+} Node;
 
 // global
 int list_length = 0;
@@ -48,7 +53,7 @@ void erase2(Node** head, char* dst)
 void reverse(Node** head, int start, int dst)
 {
 	if (start > dst)
-		reverse (Node** head, dst, start);
+		reverse (head, dst, start);
 
 	Node* Start = jump_node (head, start - 1);
 	Node* Dst = jump_node (head, dst + 1);
@@ -58,7 +63,7 @@ void reverse(Node** head, int start, int dst)
 	Node* ptr = Start -> next;
 	Node* to_connect = Dst;
 	
-	while (true) {
+	while (1) {
 		tmp = ptr;
 		ptr = ptr -> next;
 		tmp -> next = to_connect;
@@ -74,7 +79,7 @@ void reverse(Node** head, int start, int dst)
 
 Node* init_node (char* color)
 {
-	Node* new = malloc (sizeof(node));
+	Node* new = malloc (sizeof(Node));
 	strcpy (new -> color, color);
 	new -> next = NULL;
 	return new;

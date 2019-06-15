@@ -1,4 +1,4 @@
 build:
-	gcc -g hw.c -o hw && ./hw < sampleIn
+	gcc -g 12289.c -o 12289 && ./12289 < sampleIn
 gdb:
-	gdb ./hw
+	gdb ./12289
