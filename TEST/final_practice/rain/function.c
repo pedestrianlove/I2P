@@ -22,7 +22,11 @@ void insert (Node** head, char* color, int dst)
 
 void erase1 (Node** head, int dst)
 {
-	Node* Dst = jump_node (head, dst);
+	Node* Dst_prev = jump_node (head, dst-1);
+	
+	Node* Dst = Dst_prev -> next;
+	Dst_prev -> next = Dst_prev -> next -> next;
+
 	free (Dst);
 }
 
@@ -47,10 +51,23 @@ void reverse(Node** head, int start, int dst)
 		reverse (Node** head, dst, start);
 
 	Node* Start = jump_node (head, start - 1);
-	Node* Dst = jump_node (head, dst - 1);
-	
+	Node* Dst = jump_node (head, dst + 1);
 
 	
+	Node *tmp;
+	Node* ptr = Start -> next;
+	Node* to_connect = Dst;
+	
+	while (true) {
+		tmp = ptr;
+		ptr = ptr -> next;
+		tmp -> next = to_connect;
+		to_connect = tmp;
+		if (ptr -> next == Dst)
+			break;
+	}
+	
+	Start -> next = ptr;
 }
 
 /*-------------------------------------------------------*/
