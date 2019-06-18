@@ -10,6 +10,7 @@ typedef struct item {
 // global
 item** LIST;
 int LIST_LENGTH;
+int first_day_quota;
 
 // internal
 item* init_item ();
@@ -18,7 +19,7 @@ int cmp_diff (const void*, const void*);
 // interface
 void Init_list ();
 void Input_list ();
-int Analyze_list ();
+long Analyze_list ();
 void Delete_list ();
 
 int main()
@@ -27,7 +28,7 @@ int main()
 
 	Input_list ();
 
-	printf("%d\n", Analyze_list ());
+	printf("%ld\n", Analyze_list ());
 	Delete_list ();
 	return 0;
 }
@@ -35,7 +36,7 @@ int main()
 
 void Init_list ()
 {
-	scanf("%d", &LIST_LENGTH);
+	scanf("%d%d", &LIST_LENGTH, &first_day_quota);
 		
 	LIST = malloc (sizeof(item*) * LIST_LENGTH);
 	
@@ -71,21 +72,15 @@ void Input_list ()
 }
 
 
-int Analyze_list (int first_day_quota) // FIXME Logic error
+long Analyze_list () // FIXME Logic error
 {
-	int min_sum = 0;
+	long min_sum = 0;
 	
 	
 	for (int i = 0; i < LIST_LENGTH; i++)
 		LIST[i]->MIN_DAY = (LIST[i]->PRICE[0] <= LIST[i]->PRICE[1])? 0 : 1;
 
-	for (int i = 0; i < LIST_LENGTH; i++)
-		printf("%d ", LIST[i]->PRICE[2]);
-	printf("\n");
 	qsort (LIST, LIST_LENGTH, sizeof(item*), cmp_diff);	
-	for (int i = 0; i < LIST_LENGTH; i++)
-		printf("%d ", LIST[i]->PRICE[2]);
-	printf("\n");
 	
 	for (int i = 0; i < LIST_LENGTH; i++) {
 		if (i < first_day_quota) {
@@ -97,12 +92,12 @@ int Analyze_list (int first_day_quota) // FIXME Logic error
 
 	return min_sum;
 }
-int cmp_diff (const void * a, const void * b) // decreasing
+int cmp_diff (const void * b, const void * a) // decreasing
 {
-	const item * va = (const item *) a;
-	const item * vb = (const item *) b;
+	const item ** va = (const item **) a;
+	const item ** vb = (const item **) b;
 
-	return *va->PRICE[2] - *vb->PRICE[2];
+	return (*va)->PRICE[2] - (*vb)->PRICE[2];
 }
 
 
