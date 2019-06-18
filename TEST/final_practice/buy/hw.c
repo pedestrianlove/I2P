@@ -102,7 +102,7 @@ int cmp_diff (const void * a, const void * b) // decreasing
 	const item * va = (const item *) a;
 	const item * vb = (const item *) b;
 
-	return va->PRICE[2] - vb->PRICE[2];
+	return *va->PRICE[2] - *vb->PRICE[2];
 }
 
 
