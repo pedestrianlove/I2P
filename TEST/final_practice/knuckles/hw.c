@@ -2,27 +2,28 @@
 #include<stdlib.h>
 
 int* COUNT;
-char* CHAR;
 
 int knuckles () // FIXME UNKNOWN ISSUE
 {
-	int inputs;
-	scanf("%d", &inputs);
+	int length;
+	scanf("%d", &length);
+	if (length == 1)
+		return 1;
 
-	CHAR = malloc (sizeof(char) * (inputs+1));
-	scanf("%s", CHAR);
 
 	COUNT = malloc (sizeof(int) * 26);
-	for (int i = 0; i < inputs; i++)
+	for (int i = 0; i < 26; i++)
 		COUNT[i] = 0;
-	for (int i = 0; i < inputs; i++) {
-		COUNT[CHAR[i] - 'a'] ++;	
-		if (COUNT[CHAR[i] - 'a'] >= 2) 
+
+	char CHAR;
+	while (scanf(" %c", &CHAR) != EOF) { 
+		COUNT[CHAR - 'a'] ++;	
+		if (COUNT[CHAR - 'a'] >= 2) 
 			return 1;
+		COUNTER++;
 	}
-	
+
 	return 0;
-	
 }
 
 
@@ -35,7 +36,6 @@ int main()
 	else
 		printf("Different makes perfect\n");
 
-	free (CHAR);
 	free (COUNT);
 	return 0;
 }
