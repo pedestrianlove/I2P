@@ -23,11 +23,14 @@ data** LIST;
 int LIST_LENGTH;
 
 // internal
-
+int cmp_level (const void *, const void *);
+int cmp_number (const void *, const void *);
 
 // interface
 void Init_list ();
 void Get_list ();
+void Sort_list ();
+void Print_list ();
 void Delete_list ();
 
 /*-------------------------------------------------------------------*/
@@ -37,7 +40,9 @@ int main()
 
 	Get_list ();
 
-	Sort_list ();	
+	Sort_list ();
+
+	Print_list ();	
 
 	Delete_list ();
 
@@ -67,7 +72,30 @@ void Get_list ()
 
 void Sort_list ()
 {
+	qsort (LIST, LIST_LENGTH, sizeof(data*), cmp_number);
+	qsort (LIST, LIST_LENGTH, sizeof(data*), cmp_level);
+}
+int cmp_level (const void * a, const void * b)
+{
+	const data ** va = (const data **) a;
+	const data ** vb = (const data **) b;
+	return (*va)->LEVEL - (*vb)->LEVEL;
+}
+int cmp_number (const void * a, const void * b)
+{
+	const data ** va = (const data **) a;
+	const data ** vb = (const data **) b;
+	return (*va)->NUMBER - (*vb)->NUMBER;
+}
 
+
+void Print_list ()
+{
+	for (int i = 0; i < LIST_LENGTH; i++)
+		if (i < LIST_LENGTH - 1)
+			printf("%d ", LIST[i] -> INDEX);
+		else
+			printf("%d\n", LIST[i] -> INDEX);
 }
 
 
